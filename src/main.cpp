@@ -1,6 +1,5 @@
 //textsolsim
-//Author: Jacob Loof
-//23.04.2023
+//Project Start Date: 23.04.2023
 
 #include "constants.h"
 #include "structs.h"
@@ -20,9 +19,10 @@ int main() {
     // Set up the ncurses window
     initscr();
     cbreak();
-    curs_set(1);
+    curs_set(0);
     noecho();
     nodelay(stdscr, FALSE);
+    keypad(stdscr, TRUE);
 
     if (has_colors()) {
         start_color();
@@ -53,24 +53,63 @@ int main() {
     int numPlanets;
 
     while (!valid) {
-        int choice = getch() - '0';
+        int choice;
+        std::string input;
+        while (true) {
+            choice = getch();
+            if (choice == '\n') {
+                break;
+            } else if (isdigit(choice)) {
+                echochar(choice);
+                input.push_back(choice);
+            } else if (choice == KEY_BACKSPACE || choice == 127) {
+                if (!input.empty()) {
+                    input.pop_back();
+                    int y, x;
+                    getyx(stdscr, y, x);
+                    mvdelch(y, x - 1);
+                }
+            }
+        }
+
+    int finalChoice = std::stoi(input);
+    choice = finalChoice;
         switch (choice) {
             case 1: {
                 mvprintw(screen_rows / 2 + 3, screen_cols / 2 - 13, "Enter number of planets to generate: ");
                 refresh();
                 bool validInput = false;
-                char inputBuffer[10];
+                std::string input;
+                int numPlanets;
                 while (!validInput) {
-                    getstr(inputBuffer);
-                    std::istringstream inputConverter(inputBuffer);
+                    int choice;
+                    while (true) {
+                        choice = getch();
+                        if (choice == '\n') {
+                            break;
+                        } else if (isdigit(choice)) {
+                            echochar(choice);
+                            input.push_back(choice);
+                        } else if (choice == KEY_BACKSPACE || choice == 127) {
+                            if (!input.empty()) {
+                                input.pop_back();
+                                int y, x;
+                                getyx(stdscr, y, x);
+                                mvdelch(y, x - 1);
+                            }
+                        }
+                    }
 
+                    std::istringstream inputConverter(input);
                     if (inputConverter >> numPlanets) {
                         validInput = true;
                     } else {
+                        input.clear();
                         mvprintw(screen_rows / 2 + 4, screen_cols / 2 - 13, "Invalid input. Please enter a valid number: ");
                         refresh();
                     }
                 }
+
                 // Initialize the solar system
                 init(numPlanets, stars, planets, choice);
                 valid = true;

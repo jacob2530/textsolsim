@@ -1,0 +1,28 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+	  {
+		"label": "build",
+		"type": "shell",
+		"command": "clang++",
+		"args": [
+		  "--std=c++17",
+		  "-arch",
+		  "arm64",
+		  "-o",
+		  "${workspaceFolder}/bin/textsolsim",
+		  "${workspaceFolder}/src/*.cpp",
+		  "-I${workspaceFolder}/include",
+		  "-lncurses"
+		],
+		"group": {
+		  "kind": "build",
+		  "isDefault": true
+		},
+		"presentation": {
+		  "reveal": "always"
+		}
+	  }
+	]
+  }
+  

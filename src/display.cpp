@@ -61,24 +61,31 @@ void displaySystem(const Star& star, const std::vector<Planet>& planets, int hig
 
 void displayHighlightedInfo(const Star& star, const std::vector<Planet>& planets, int highlightedObjectIndex) {
     int info_y = 1;
-    int info_x = getmaxx(stdscr) - 60;
-    int maxWidth = 50;
+    int info_x = getmaxx(stdscr) - 50;
+    int maxWidth = 40;
 
     int bottom_info_y = getmaxy(stdscr) - 6;
-    int bottom_info_x = info_x;
+    int bottom_info_x = info_x - 15;
+
+    //Print controls
+    mvprintw(0, 10, "---  Controls  ---");
+    mvprintw(1, 1, "Press the Up/Down arrow keys to cycle through system objects.");
+    mvprintw(2, 1, "Press (Q) to quit the simulation.");
 
     if (highlightedObjectIndex == -1) {
         // Star
         attron(COLOR_PAIR(star.color));
-        mvprintw(info_y, info_x, "---  %s  ---", star.name.c_str());
+        mvprintw(0, info_x, "---  %s  ---", star.name.c_str());
         attroff(COLOR_PAIR(star.color));
         std::vector<std::string> descLines = breakStringIntoLines(star.desc, maxWidth);
         int lineNumber = 0;
+        mvprintw(1, info_x, "Name Origin: ");
         for (const std::string &line : descLines) {
-            mvprintw(info_y + lineNumber + 1, info_x, "Name Origin: %s", line.c_str());
+            mvprintw(info_y + lineNumber + 1, info_x, "%s", line.c_str());
             lineNumber++;
         }
         info_y = lineNumber;
+        //bottom star info
         mvprintw(bottom_info_y++, bottom_info_x, "---  Mass: %.2e SM  ---  Speed: %6.2f km/s  ---", star.mass, std::sqrt(star.vx * star.vx + star.vy * star.vy + star.vz * star.vz) * AUtoKM / 1000);
         mvprintw(bottom_info_y++, bottom_info_x, "---  Distance from star: N/A AU  ---");
         mvprintw(bottom_info_y++, bottom_info_x, "--- X Position: %.2f AU  ---  X Velocity: %.2f km/s ---", star.x, star.vx * AUtoKM / 1000);
@@ -93,22 +100,25 @@ void displayHighlightedInfo(const Star& star, const std::vector<Planet>& planets
         float distance = std::sqrt(dx * dx + dy * dy + dz * dz);
         float speed = std::sqrt(planet.vx * planet.vx + planet.vy * planet.vy + planet.vz * planet.vz);
         attron(COLOR_PAIR(planet.color));
-        mvprintw(info_y, info_x, "---  %s  ---", planet.name.c_str());
+        mvprintw(0, info_x, "---  %s  ---", planet.name.c_str());
         attroff(COLOR_PAIR(planet.color));
         std::vector<std::string> descLines = breakStringIntoLines(planet.desc, maxWidth);
         int lineNumber = 0;
+        info_y = 1;
+        mvprintw(1, info_x, "Name Origin: ");
         for (const std::string &line : descLines) {
-            mvprintw(info_y + lineNumber + 1, info_x, "Name Origin: %s", line.c_str());
+            mvprintw(info_y + lineNumber + 1, info_x, "%s", line.c_str());
             lineNumber++;
         }
         info_y += lineNumber + 1;
-        mvprintw(info_y++, bottom_info_x, "---Planet Type: %s", planet.type.c_str());
-        mvprintw(info_y++, bottom_info_x, "%s", planet.typedesc.c_str());
+        mvprintw(info_y, info_x, "---Planet Type: %s", planet.type.c_str());
+        mvprintw(info_y++, info_x, "%s", planet.typedesc.c_str());
+        //bottom planet info
         mvprintw(bottom_info_y++, bottom_info_x, "---  Mass: %.2e SM  ---  Speed: %6.2f km/s  ---", planet.mass, speed * AUtoKM / 1000);
         mvprintw(bottom_info_y++, bottom_info_x, "---  Distance from star: %3.2f AU  ---", distance);
-        mvprintw(bottom_info_y++, bottom_info_x, "---X Position: %3.2f AU X Velocity: %6.2f km/s---", planet.x, planet.vx * AUtoKM / 1000);
-        mvprintw(bottom_info_y++, bottom_info_x, "---Y Position: %3.2f AU Y Velocity: %6.2f km/s---", planet.y, planet.vy * AUtoKM / 1000);
-        mvprintw(bottom_info_y++, bottom_info_x, "---Z Position: %3.2f AU Z Velocity: %6.2f km/s---", planet.z, planet.vz * AUtoKM / 1000);
+        mvprintw(bottom_info_y++, bottom_info_x, "---X Position: %3.2f AU  ---  X Velocity: %6.2f km/s---", planet.x, planet.vx * AUtoKM / 1000);
+        mvprintw(bottom_info_y++, bottom_info_x, "---Y Position: %3.2f AU  ---  Y Velocity: %6.2f km/s---", planet.y, planet.vy * AUtoKM / 1000);
+        mvprintw(bottom_info_y++, bottom_info_x, "---Z Position: %3.2f AU  ---  Z Velocity: %6.2f km/s---", planet.z, planet.vz * AUtoKM / 1000);
     }
 }
 

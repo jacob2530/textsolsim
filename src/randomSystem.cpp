@@ -30,7 +30,7 @@ Planet generatePlanet(const Star& star, int i, std::vector<std::string>& names, 
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_real_distribution<> mass_distrib(planetMassMin, planetMassMax);
-    std::uniform_real_distribution<> distance_distrib(5, 15);//Mean distrib for distance of 5, with std deviation of 5
+    std::uniform_real_distribution<> distance_distrib(5, 25);//Mean distrib for distance of 5, with std deviation of 25
     std::uniform_real_distribution<> angle_distrib(0, 2 * M_PI);
     std::uniform_real_distribution<> inclination_distrib(-0.175, 0.175);
     std::uniform_real_distribution<> random_float_distrib(-1, 1);
