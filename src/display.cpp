@@ -64,8 +64,8 @@ void displayHighlightedInfo(const Star& star, const std::vector<Planet>& planets
     int info_x = getmaxx(stdscr) - 50;
     int maxWidth = 40;
 
-    int bottom_info_y = getmaxy(stdscr) - 6;
-    int bottom_info_x = info_x - 15;
+    int bottom_info_y = getmaxy(stdscr) - 12;
+    int bottom_info_x = info_x - 20;
 
     //Print controls
     mvprintw(0, 10, "---  Controls  ---");
@@ -86,8 +86,9 @@ void displayHighlightedInfo(const Star& star, const std::vector<Planet>& planets
         }
         info_y = lineNumber;
         //bottom star info
-        mvprintw(bottom_info_y++, bottom_info_x, "---  Mass: %.2e SM  ---  Speed: %6.2f km/s  ---", star.mass, std::sqrt(star.vx * star.vx + star.vy * star.vy + star.vz * star.vz) * AUtoKM / 1000);
-        mvprintw(bottom_info_y++, bottom_info_x, "---  Distance from star: N/A AU  ---");
+        mvprintw(bottom_info_y++, bottom_info_x, "---  Mass: %.2f SM  ---  Speed: %6.2f km/s  ---", star.mass, std::sqrt(star.vx * star.vx + star.vy * star.vy + star.vz * star.vz) * AUtoKM / 1000);
+        mvprintw(bottom_info_y++, bottom_info_x, "---  Luminosity: %.2f Solar Luminosities  ---", star.luminosity);
+        mvprintw(bottom_info_y++, bottom_info_x, "---  Radius: %.2f Solar Radii  ---", star.radius);
         mvprintw(bottom_info_y++, bottom_info_x, "--- X Position: %.2f AU  ---  X Velocity: %.2f km/s ---", star.x, star.vx * AUtoKM / 1000);
         mvprintw(bottom_info_y++, bottom_info_x, "--- Y Position: %.2f AU  ---  Y Velocity: %.2f km/s ---", star.y, star.vy * AUtoKM / 1000);
         mvprintw(bottom_info_y++, bottom_info_x, "--- Z Position: %.2f AU  ---  Z Velocity: %.2f km/s ---", star.z, star.vz * AUtoKM / 1000);
@@ -111,11 +112,14 @@ void displayHighlightedInfo(const Star& star, const std::vector<Planet>& planets
             lineNumber++;
         }
         info_y += lineNumber + 1;
-        mvprintw(info_y, info_x, "---Planet Type: %s", planet.type.c_str());
-        mvprintw(info_y++, info_x, "%s", planet.typedesc.c_str());
+        mvprintw(info_y++, info_x, "---Planet Type: %s", planet.type.c_str());
+        mvprintw(info_y++, info_x,"      Subtype: %s", planet.subtype.c_str());
         //bottom planet info
-        mvprintw(bottom_info_y++, bottom_info_x, "---  Mass: %.2e SM  ---  Speed: %6.2f km/s  ---", planet.mass, speed * AUtoKM / 1000);
+        
         mvprintw(bottom_info_y++, bottom_info_x, "---  Distance from star: %3.2f AU  ---", distance);
+        mvprintw(bottom_info_y++, bottom_info_x, "---  Effective Temperature: %.2f  ---", kToF(planet.Te));
+        mvprintw(bottom_info_y++, bottom_info_x, "---  Speed: %6.2f km/s  ---", speed * AUtoKM / 1000);
+        mvprintw(bottom_info_y++, bottom_info_x, "---  Mass: %.2f EM  ---  Radius: %6.2f Earth Radii  ---", planet.mass * SMtoEM, planet.radius);
         mvprintw(bottom_info_y++, bottom_info_x, "---X Position: %3.2f AU  ---  X Velocity: %6.2f km/s---", planet.x, planet.vx * AUtoKM / 1000);
         mvprintw(bottom_info_y++, bottom_info_x, "---Y Position: %3.2f AU  ---  Y Velocity: %6.2f km/s---", planet.y, planet.vy * AUtoKM / 1000);
         mvprintw(bottom_info_y++, bottom_info_x, "---Z Position: %3.2f AU  ---  Z Velocity: %6.2f km/s---", planet.z, planet.vz * AUtoKM / 1000);

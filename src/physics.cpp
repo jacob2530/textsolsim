@@ -8,11 +8,13 @@ void applyGravity(Star& star, std::vector<Planet>& planets, float dt) {
         float dz = planet.z - star.z;
 
         float distanceSquared = dx * dx + dy * dy + dz * dz;
+        float distance = std::sqrt(std::fabs(distanceSquared));
         float force = G * star.mass * planet.mass / distanceSquared;
 
-        float forceX = force * dx / std::sqrt(distanceSquared);
-        float forceY = force * dy / std::sqrt(distanceSquared);
-        float forceZ = force * dz / std::sqrt(distanceSquared);
+
+        float forceX = force * dx / distance;
+        float forceY = force * dy / distance;
+        float forceZ = force * dz / distance;
 
         star.vx += forceX * dt / star.mass;
         star.vy += forceY * dt / star.mass;
@@ -30,11 +32,12 @@ void applyGravity(Star& star, std::vector<Planet>& planets, float dt) {
                 float dz = otherPlanet.z - planet.z;
 
                 float distanceSquared = dx * dx + dy * dy + dz * dz;
+                float distance = std::sqrt(std::fabs(distanceSquared));
                 float force = G * planet.mass * otherPlanet.mass / distanceSquared;
 
-                float forceX = force * dx / std::sqrt(distanceSquared);
-                float forceY = force * dy / std::sqrt(distanceSquared);
-                float forceZ = force * dz / std::sqrt(distanceSquared);
+                float forceX = force * dx / distance;
+                float forceY = force * dy / distance;
+                float forceZ = force * dz / distance;
 
                 // Update the velocities of the planets based on the gravitational force
                 planet.vx += forceX * dt / planet.mass;
@@ -53,9 +56,6 @@ void updateStarPos(Star& star, float dt) {
     star.x += star.vx * dt;
     star.y += star.vy * dt;
     star.z += star.vz * dt;
-
-    //debug
-    //std::cout << "Star position x: " << star.x << " y: " << star.y << " z: " << star.z << std::endl;
 }
 
 void updatePlanetPos(Planet& planet, float dt) {
@@ -72,9 +72,6 @@ void updatePlanetPos(Planet& planet, float dt) {
     if (planet.trail.size() > trail_length) {
         planet.trail.pop_back();
     }
-
-    //debug
-    //std::cout << "Planet position x: " << planet.x << " y: " << planet.y << " z: " << planet.z << std::endl;
 }
 
 float calculateSpeed(Planet& planet) {

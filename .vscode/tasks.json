@@ -9,6 +9,7 @@
 		  "--std=c++17",
 		  "-arch",
 		  "arm64",
+		  "-g",
 		  "-o",
 		  "${workspaceFolder}/bin/textsolsim",
 		  "${workspaceFolder}/src/*.cpp",

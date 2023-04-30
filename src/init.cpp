@@ -9,13 +9,11 @@ void init(int numPlanets, std::vector<Star>& stars, std::vector<Planet>& planets
         std::vector<std::string> planetDescriptions = readFile("planetOrigins.txt");
         std::vector<std::string> starNames = readFile("stars.txt");
         std::vector<std::string> starDescriptions = readFile("starOrigins.txt");
-        std::vector<std::string> planetTypes = readFile("types.txt");
-        std::vector<std::string> planetTypeDescriptions = readFile("typeDescriptions.txt");
         Star star = generateStar(starNames, starDescriptions);
         stars.push_back(star);
         float totalMass, avgMass;
         for (int i = 0; i < numPlanets; i++) {
-            Planet planet = generatePlanet(star, i, planetNames, planetDescriptions, planetTypes, planetTypeDescriptions);
+            Planet planet = generatePlanet(star, i, planetNames, planetDescriptions);
             planets.push_back(planet);
             totalMass += planets[i].mass;
         }

@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <cstdlib>
 #include <random>
 #include <stdlib.h>
 #include <vector>
@@ -7,6 +8,10 @@
 #include <sstream>
 #include "structs.h"
 #include "constants.h"
+#include "physics.h"
+#include "randomSystem.h"
+#include "home.h"
+#include "display.h"
 
 void init(int numPlanets, std::vector<Star>& stars, std::vector<Planet>& planets, int choice);
 
